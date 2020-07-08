@@ -15,8 +15,9 @@ import { Response } from '../response.class';
 export class ArticlesComponent implements OnInit {
 
   pictureUrl: string;
-  articleList: Array<Article> = [];
-  
+  articleList:Array<Article> = [];
+  articleList1: Array<Article> = [];
+
   color: string;
   message: string;
   existArticle: Boolean = true;
@@ -27,11 +28,12 @@ export class ArticlesComponent implements OnInit {
 
    ngOnInit() {
     let category: string = this.route.snapshot.paramMap.get('category');
-    
+
 
    this.httpService.getTopHeadline(category).subscribe(
      (x) =>{
       this.articleList=x;
+      this.articleList1 =x;
      },
      (error) => {
       console.log(error)
@@ -41,7 +43,7 @@ export class ArticlesComponent implements OnInit {
 
     }
    );
- 
+
 
   }
   display(color) {
@@ -49,11 +51,13 @@ export class ArticlesComponent implements OnInit {
 
   }
   getSearchValue(value) {
+    console.log(value);
     if (value != " ") {
+      this.articleList = this.articleList1;
       this.articleList = this.articleList.filter(x => x.title.toLocaleLowerCase().includes(value.toLocaleLowerCase()));
       if (this.articleList.filter(x => x.title.toLocaleLowerCase().includes(value.toLocaleLowerCase())).length == 0) {
         this.existArticle = false;
-        this.message = "Не постоји чланак са унесеним насловом";
+        this.message = "Ne postoji članak sa unesenim naslovom";
       }
       else {
         this.existArticle = true;
